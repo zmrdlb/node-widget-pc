@@ -5,8 +5,9 @@
  * @version 1.0.0 | 2016-01-26 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @example
- * requirejs(['liblayers/alertControl'],function($alertControl){
-		var curlayer = new $alertControl();
+ * const AlertControl = require('liblayer-alertControl');
+ *
+		var curlayer = new AlertControl();
 		curlayer.setconfig({
 			alert: {
 				frametpl: [
@@ -24,28 +25,28 @@
             }
         });
         curlayer.getlayerobj()； //layer/alert类对象
-   });
  * */
-define(['liblayers/alert','liblayers/baseControl','libinherit/extendClass'],function($alert,$baseControl,$extendClass){
-    /**
-     * alert工厂控制器
-     */
-	function AlertControl(hidedestroy){
-		AlertControl.superclass.constructor.call(this,hidedestroy);
-		this._okcal = function(){}; //点击ok的回调私有存储器
+ const Alert = require('./alert.js'),
+       BaseControl = require('./baseControl.js');
+
+/**
+* alert工厂控制器
+*/
+class AlertControl extends Alert {
+    constructor(hidedestroy) {
+        supert(hidedestroy);
+        this._okcal = function(){}; //点击ok的回调私有存储器
 		this._funarr = ['ok']; //可控制的回调方法名
-	}
-	$extendClass(AlertControl,$baseControl);
-	/**
+    }
+    /**
 	 * 获取alert弹层
 	 * @param {Boolean} reset 是否重新渲染模板。默认为false
 	 */
-	AlertControl.prototype.getlayerobj = function(reset){
-		var that = this;
+    getlayerobj(reset){
 		if(this._layerobj == null){
-			this._layerobj = new $alert(this._defaultopt);
-			this._layerobj.okcal.add(function(e){
-				that._okcal();
+			this._layerobj = new Alert(this._defaultopt);
+			this._layerobj.okcal.add((e) => {
+				this._okcal();
 			});
             this._addcall();
 		}else{
@@ -54,13 +55,14 @@ define(['liblayers/alert','liblayers/baseControl','libinherit/extendClass'],func
             }
         }
 		return this._layerobj;
-	};
-	/**
+    }
+    /**
 	 * 销毁alert弹层
 	 */
-	AlertControl.prototype.destroy = function(){
-		AlertControl.superclass.destroy.call(this);
-		this._okcal = function(){};
-	};
-	return AlertControl;
-});
+    destroy(){
+        super.destroy();
+        this._okcal = function(){};
+    }
+}
+
+module.exports = AlertControl;

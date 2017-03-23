@@ -7,8 +7,9 @@
  * @version 1.0.0 | 2015-09-16 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @example
- * requirejs(['liblayers/confirm'],function($confirm){
- * 	 var layer = new $confirm({
+ * 	 const Confirm = require('liblayer-confirm');
+ *
+ * 	 var layer = new Confirm({
  * 	 	confirm: {
  * 			frametpl: [ //弹层基本模板
 				'<div class="js-title"></div>',
@@ -30,8 +31,8 @@
  *   layer.layer; //层dom节点对象
  *   layer.container; //浮层容器
  *   layer.destroy(); //销毁层
- * });
  * */
+
 define(['$','liblayers/bombLayer','liblayers/tpl','libcompatible/deviceevtname','libinherit/extendClass'],function($,$bombLayer,$tpl,$deviceevtname,$extendClass){
 	/**
 	 * confirm类

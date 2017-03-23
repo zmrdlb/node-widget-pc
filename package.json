@@ -1,0 +1,27 @@
+{
+  "name": "node-widget-pc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "browser": {
+    "libutil-datetime": "./util/datetime.js"
+  },
+  "scripts": {
+    "jquery": "browserify -r jquery > lib/jquery.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zmrdlb/node-widget-pc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zmrdlb/node-widget-pc/issues"
+  },
+  "homepage": "https://github.com/zmrdlb/node-widget-pc#readme",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "jquery": "^3.2.1"
+  }
+}

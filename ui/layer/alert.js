@@ -6,8 +6,9 @@
  * @version 1.0.0 | 2015-09-14 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @example
- * requirejs(['liblayers/alert'],function($alert){
- * 	 var layer = new $alert({
+ * 	 const Alert = require('liblayer-alert');
+ *
+ * 	 var layer = new Alert({
  * 	 	alert: {
  * 			frametpl: [ //弹层基本模板
 				'<div class="js-title"></div>',
@@ -28,9 +29,12 @@
  *   layer.layer; //层dom节点对象
  *   layer.container; //浮层容器
  *   layer.destroy(); //销毁层
- * });
  * */
-define(['$','liblayers/bombLayer','liblayers/tpl','libcompatible/deviceevtname','libinherit/extendClass'],function($,$bombLayer,$tpl,$deviceevtname,$extendClass){
+const $ = require('jquery'),
+ 	   BombLayer = require('./bombLayer.js');
+	   Tpl = require('./tpl.js');
+
+class Alert extends BombLayer {
 	/**
 	 * alert类
      * @param {Object} config 参数同layer/bombLayer里面的config,在此基础上增加如下默认配置
@@ -40,42 +44,42 @@ define(['$','liblayers/bombLayer','liblayers/tpl','libcompatible/deviceevtname',
      *    }
      * }
 	 */
-	function alert(config){
+	constructor(config) {
 		var opt = $.extend(true,{
 			alert: {
-				frametpl: $tpl.alert //alert弹层基本模板。要求请详见layer/tpl里面alert项的要求
+				frametpl: Tpl.alert //alert弹层基本模板。要求请详见layer/tpl里面alert项的要求
 			}
 		},config);
-		var that = this;
-		alert.superclass.constructor.call(this,opt);
+		super(opt);
+
 		this.setContent(opt.alert.frametpl);
 		this.contentnode = this.layer.find('.js-content'); //内容区节点
 		this.okcal = $.Callbacks();
 		//事件绑定
-	    this.layer.on($deviceevtname.click, '.js-ok', function(e){
+	    this.layer.on('click.lib', '.js-ok', (e) => {
 	    	e.preventDefault();
-	    	that.okcal.fire(e);
-			that.hide();
+	    	this.okcal.fire(e);
+			this.hide();
 	    });
 	}
-	$extendClass(alert,$bombLayer);
 	/**
      * 设置alert内容区具有[node="content"]属性的节点的html
      * @param {String} html
      */
-    alert.prototype.setMyContent = function(html){
-        if(typeof html == 'string' && this.contentnode.length > 0){
+	setMyContent(html) {
+		if(typeof html == 'string' && this.contentnode.length > 0){
             this.contentnode.html(html);
         }
-    };
+	}
 	/**
 	 * 组件销毁
 	 */
-	alert.prototype.destroy = function(){
-		this.layer.off($deviceevtname.click, '.js-ok');
-		alert.superclass.destroy.call(this);
+	destroy() {
+		this.layer.off('click.lib', '.js-ok');
+		super.destroy();
 		this.contentnode = null;
 		this.okcal = null;
-	};
-	return alert;
-});
+	}
+}
+
+module.exports Alert;
