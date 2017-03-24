@@ -4,26 +4,32 @@
  * @version 1.0 | 2017-01-19 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @return
+ * @example
+ *      const WorkerControl = require('libutil-workerControl');
  * */
- define(function(){
+
+ class Worker{
      /**
       * 一个线程
       */
-     function Worker(){
+     constructor(){
          this.lock = true;
      }
+ }
+
+ class WorkerControl {
      /**
       * 线程池控制器类
       * @return {[type]} [description]
       */
-     function workerControl(){
+     constructor(){
          this._workerobjs = []; //workerControl对象
      }
      /**
       * 返回当前空闲的workerControl对象
       * @return {[type]} [description]
       */
-     workerControl.prototype.get = function(){
+     get(){
          var curworker = null;
          for(var i = 0, len = this._workerobjs.length; i < len; i++){
              if(this._workerobjs[i].lock == false){ //既无请求又没有被锁定
@@ -38,13 +44,12 @@
          }
          return curworker;
      }
-
      /**
       * 通知当前workerControl对象已经使用完毕
       * @param {instance of workerControl} worker 如果提供了worker，则结束此线程；如果没提供，则结束第一个正在使用的线程
       * @return {instance of workerControl | null} 当前结束的线程对象.没有则为null
       */
-     workerControl.prototype.end = function(worker){
+     end(worker){
          var curworker = null;
          for(var i = 0, len = this._workerobjs.length; i < len; i++){
              if(worker){
@@ -63,12 +68,11 @@
          }
          return curworker;
      }
-
      /**
       * 是否所有的线程都被使用完毕
       * @return {Boolean} true：所有线程都空闲
       */
-     workerControl.prototype.isend = function(){
+     isend(){
          var result = true;
          for(var i = 0, len = this._workerobjs.length; i < len; i++){
              if(this._workerobjs[i].lock == true){ //既无请求又没有被锁定
@@ -78,6 +82,6 @@
          }
          return result;
      }
+ }
 
-     return workerControl;
- });
+module.exports = WorkerControl;

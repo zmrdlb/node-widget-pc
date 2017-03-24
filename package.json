@@ -4,7 +4,28 @@
   "description": "",
   "main": "index.js",
   "browser": {
-    "libutil-datetime": "./util/datetime.js"
+        "libutil-datetime": "./util/datetime.js",
+        "libutil-deviceevtname": "./util/deviceevtname.js",
+        "libutil-resize": "./util/resize.js",
+        "libutil-scroll": "./util/scroll.js",
+        "libutil-tool": "./util/tool.js",
+        "libutil-tpl": "./util/tpl.js",
+        "libutil-winresize": "./util/winresize.js",
+        "libutil-winscroll": "./util/winscroll.js",
+        "libutil-workerControl": "./util/workerControl.js",
+        "libutil-csssuport": "./util/csssuport.js",
+
+        "liblayer-alert": "./ui/layer/alert.js",
+        "liblayer-alertControl": "./ui/layer/alertControl.js",
+        "liblayer-alertSingle": "./ui/layer/alertSingle.js",
+        "liblayer-baseControl": "./ui/layer/baseControl.js",
+        "liblayer-bombLayer": "./ui/layer/bombLayer.js",
+        "liblayer-confirm": "./ui/layer/confirm.js",
+        "liblayer-confirmControl": "./ui/layer/confirmControl.js",
+        "liblayer-confirmSingle": "./ui/layer/confirmSingle.js",
+        "liblayer-layer": "./ui/layer/layer.js",
+        "liblayer-mask": "./ui/layer/mask.js",
+        "liblayer-positionBomb": "./ui/layer/positionBomb.js"
   },
   "scripts": {
     "jquery": "browserify -r jquery --standalone $ > lib/jquery.js"
