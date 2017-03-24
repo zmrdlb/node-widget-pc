@@ -4,16 +4,17 @@
  * @version 1.0.0 | 2015-09-16 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @example
- * requirejs(['liblayers/confirmSingle'],function($confirmSingle){
-		$confirmSingle.setconfig({
+ *      const ConfirmSingle = require('liblayer-confirmSingle');
+ *
+		ConfirmSingle.setconfig({
 			confirm: {
 				frametpl: [
-					'<div node="content"></div>',
-					'<div><a href="javascript:;" node="ok">好的</a><a href="javascript:;" node="cancel">等下说</a></div>'
+					'<div class="js-content"></div>',
+					'<div><a href="javascript:;" class="js-ok">好的</a><a href="javascript:;" class="js-cancel">等下说</a></div>'
 				].join('')
 			}
 		});
-		$confirmSingle.show({
+		ConfirmSingle.show({
 		    content: '您还未登陆'
 		},{
 		    ok: function(){
@@ -23,9 +24,8 @@
 				console.log('点击等下说');
 			}
 		});
-        $confirmSingle.getlayerobj()； //layer/confirm类对象
-   });
+        ConfirmSingle.getlayerobj()； //layer/confirm类对象
  * */
-define(['liblayers/confirmControl'],function($confirmControl){
-    return new $confirmControl();
-});
+ const ConfrimControl = require('./confirmControl.js');
+
+ module.exports = new ConfrimControl();

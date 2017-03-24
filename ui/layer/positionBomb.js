@@ -5,45 +5,52 @@
  * @author Zhang Mingrui | 592044573@qq.com
  * @return 弹层定位方法
  * @example
- * requirejs(['layer/positionBomb'],function($positionBomb){
- * 	 var pos = new $positionBomb({layer:层dom节点});
+ * 	 const PositionBomb = require('liblayer-positionBomb');
+ *
+ * 	 var pos = new PositionBomb({layer:层dom节点});
  * 	 pos.poscal.add(function(){console.log('layer定位后回调')});
- * });
  * */
-define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize'],function($,$winscroll,$scroll,$winresize,$resize){
-	/**
-	 * 定位算法
-	 */
-	function setpos(domopt,posopt){
-		var cssopt = {},layer = domopt.layer,offcon = domopt.offcon;
-		layer.css('position',domopt.position);
-		var marginLeft = 0, marginTop = 0;
-		if(domopt.position == 'absolute' && posopt.fixed){
-			marginLeft = offcon.scrollLeft();
-			marginTop = offcon.scrollTop();
-		}
-		switch (posopt.mode){
-			case 'c': //居中定位
-				marginLeft -= (Math.max(layer.width(),posopt.minwidth)/2+posopt.offset[0]);
-                marginTop -= (Math.max(layer.height(),posopt.minheight)/2+posopt.offset[1]);
-				cssopt.top = '50%';
-				cssopt.left = '50%';
-				break;
-			case 'full': //满屏定位，占满整个定位容器。本来不设置width和height，设置了right和bottom。但是偶发margin不起作用，此时读取的元素尺寸为0.
-			    cssopt.width = '100%';
-                cssopt.height = '100%';
-				cssopt.top = '0';
-				cssopt.left = '0';
-				break;
-		}
-		cssopt.marginLeft = marginLeft+'px';
-		cssopt.marginTop = marginTop+'px';
-		if(typeof posopt.custompos == 'function'){
-		    posopt.custompos(cssopt);
-		}else{
-		    layer.css(cssopt);
-		}
+
+ const Winscroll = require('libutil-winscroll'),
+ 		Scroll = require('libutil-scroll'),
+		Winresize = require('libutil-winresize'),
+		Resize = require('libutil-resize');
+
+/**
+ * 定位算法
+ */
+function setpos(domopt,posopt){
+	var cssopt = {},layer = domopt.layer,offcon = domopt.offcon;
+	layer.css('position',domopt.position);
+	var marginLeft = 0, marginTop = 0;
+	if(domopt.position == 'absolute' && posopt.fixed){
+		marginLeft = offcon.scrollLeft();
+		marginTop = offcon.scrollTop();
 	}
+	switch (posopt.mode){
+		case 'c': //居中定位
+			marginLeft -= (Math.max(layer.width(),posopt.minwidth)/2+posopt.offset[0]);
+			marginTop -= (Math.max(layer.height(),posopt.minheight)/2+posopt.offset[1]);
+			cssopt.top = '50%';
+			cssopt.left = '50%';
+			break;
+		case 'full': //满屏定位，占满整个定位容器。本来不设置width和height，设置了right和bottom。但是偶发margin不起作用，此时读取的元素尺寸为0.
+			cssopt.width = '100%';
+			cssopt.height = '100%';
+			cssopt.top = '0';
+			cssopt.left = '0';
+			break;
+	}
+	cssopt.marginLeft = marginLeft+'px';
+	cssopt.marginTop = marginTop+'px';
+	if(typeof posopt.custompos == 'function'){
+		posopt.custompos(cssopt);
+	}else{
+		layer.css(cssopt);
+	}
+}
+
+class Position{
 	/**
 	 * 定位类
      * @param {JSON} doms 定位dom相关信息
@@ -52,7 +59,7 @@ define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize
      *      }
      * @param {JSON} config 层定位配置参数，默认信息及说明如下posopt代码处
 	 */
-	function position(doms,config){
+	constructor(doms,config){
 		//参数检测与设置
 		if(arguments.length == 0){
 			throw new Error('必须传入相关定位的dom参数');
@@ -101,10 +108,10 @@ define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize
 			if(posopt.fixed) { //如果固定定位，则监听scroll事件
 			    islisscroll = true;
                 if(domopt.offpage){
-                    $winscroll.listen(listencall);
+                    Winscroll.listen(listencall);
                 }
                 else{
-                    var scroll = new $scroll(domopt.offcon);
+                    var scroll = new Scroll(domopt.offcon);
                     scroll.listen(listencall);
                 }
 			}
@@ -113,9 +120,9 @@ define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize
         if(posopt.mode == 'c' && posopt.sizechange){
             islisresize = true;
             if(domopt.offpage){
-                $winresize.listen(listencall);
+                Winresize.listen(listencall);
             }else{
-                var resize = new $resize(domopt.offcon);
+                var resize = new Resize(domopt.offcon);
                 resize.listen(listencall);
             }
         }
@@ -126,25 +133,25 @@ define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize
 			this.posopt = null;
 			if(islisscroll){
 				if(domopt.offpage){
-					$winscroll.unlisten(listencall);
+					Winscroll.unlisten(listencall);
 				}else{
 					scroll.unlisten(listencall);
 				}
 			}
 			if(islisresize){
 			    if(domopt.offpage){
-                    $winresize.unlisten(listencall);
+                    Winresize.unlisten(listencall);
                 }else{
                     resize.unlisten(listencall);
                 }
 			}
 		};
-	};
+	}
 	/**
 	 * 进行定位
 	 * @return {Boolean} 是否定位成功
 	 */
-	position.prototype.setpos = function(){
+	setpos(){
 		if(this.domopt.layer.css('display') == 'none' || this.domopt.offcon.css('display') == 'none'){
 			return false;
 		}
@@ -153,6 +160,7 @@ define(['$','libevt/winscroll','libevt/scroll','libevt/winresize','libevt/resize
             this.poscal.fire();
 			return true;
 		}
-	};
-	return position;
-});
+	}
+}
+
+module.exports = Position;

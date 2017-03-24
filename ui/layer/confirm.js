@@ -32,8 +32,10 @@
  *   layer.container; //浮层容器
  *   layer.destroy(); //销毁层
  * */
+const BombLayer = require('./bombLayer.js'),
+		Tpl = require('./tpl.js');
 
-define(['$','liblayers/bombLayer','liblayers/tpl','libcompatible/deviceevtname','libinherit/extendClass'],function($,$bombLayer,$tpl,$deviceevtname,$extendClass){
+class Confirm extends BombLayer {
 	/**
 	 * confirm类
      * @param {Object} config 参数同layer/bombLayer里面的config,在此基础上增加如下默认配置
@@ -43,49 +45,48 @@ define(['$','liblayers/bombLayer','liblayers/tpl','libcompatible/deviceevtname',
      *    }
      * }
 	 */
-	function confirm(config){
+	constructor(config) {
 		var opt = $.extend(true,{
 			confirm: {
-				frametpl: $tpl.confirm //confirm弹层基本模板。要求请详见layer/tpl里面confirm项的要求
+				frametpl: Tpl.confirm //confirm弹层基本模板。要求请详见layer/tpl里面confirm项的要求
 			}
 		},config);
-		var that = this;
-		confirm.superclass.constructor.call(this,opt);
+		super(opt);
 		this.setContent(opt.confirm.frametpl);
 		this.contentnode = this.layer.find('.js-content'); //内容区节点
 		this.okcal = $.Callbacks();
 		this.cancelcal = $.Callbacks();
 		//事件绑定
-	    this.layer.on($deviceevtname.click, '.js-ok', function(e){
+	    this.layer.on('click.lib', '.js-ok', (e) => {
 	    	e.preventDefault();
-			that.okcal.fire(e);
-	    	that.hide();
+			this.okcal.fire(e);
+	    	this.hide();
 	    });
-	    this.layer.on($deviceevtname.click, '.js-cancel', function(e){
+	    this.layer.on('click.lib', '.js-cancel', (e) => {
 	    	e.preventDefault();
-			that.cancelcal.fire(e);
-	    	that.hide();
+			this.cancelcal.fire(e);
+	    	this.hide();
 	    });
 	}
-	$extendClass(confirm,$bombLayer);
 	/**
 	 * 设置confirm内容区具有[node="content"]属性的节点的html
      * @param {String} html
 	 */
-	confirm.prototype.setMyContent = function(html){
+	setMyContent(html){
 		if(typeof html == 'string' && this.contentnode.length > 0){
 			this.contentnode.html(html);
 		}
-	};
+	}
 	/**
 	 * 组件销毁
 	 */
-	confirm.prototype.destroy = function(){
-		this.layer.off($deviceevtname.click, '.js-ok');
-		this.layer.off($deviceevtname.click, '.js-cancel');
-		confirm.superclass.destroy.call(this);
+	destroy(){
+		this.layer.off('click.lib', '.js-ok');
+		this.layer.off('click.lib', '.js-cancel');
+		super.destroy();
 		this.contentnode = null;
 		this.okcal = null;
-	};
-	return confirm;
-});
+	}
+}
+
+module.exports = Confirm;

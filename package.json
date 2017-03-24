@@ -7,7 +7,7 @@
     "libutil-datetime": "./util/datetime.js"
   },
   "scripts": {
-    "jquery": "browserify -r jquery > lib/jquery.js"
+    "jquery": "browserify -r jquery --standalone $ > lib/jquery.js"
   },
   "repository": {
     "type": "git",

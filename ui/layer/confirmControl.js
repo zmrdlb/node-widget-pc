@@ -5,8 +5,9 @@
  * @version 1.0.0 | 2016-01-26 版本信息
  * @author Zhang Mingrui | 592044573@qq.com
  * @example
- * requirejs(['liblayers/confirmControl'],function($confirmControl){
-		var curconfirm = new $confirmControl();
+ * 		const ConfirmControl = require('liblayer-confirmControl');
+ *
+		var curconfirm = new ConfirmControl();
 		curconfirm.setconfig({
 			confirm: {
 				frametpl: [
@@ -26,32 +27,33 @@
 			}
 		});
 		curconfirm.getlayerobj()； //layer/confirm类对象
-   });
  * */
-define(['liblayers/confirm','liblayers/baseControl','libinherit/extendClass'],function($confirm,$baseControl,$extendClass){
+
+ const Confirm = require('./confirm.js'),
+ 		BaseControl = require('./baseControl.js');
+
+class ConfirmControl extends BaseControl {
 	/**
      * confirm工厂控制器
      */
-	function ConfirmControl(hidedestroy){
-		ConfirmControl.superclass.constructor.call(this,hidedestroy);
+	constructor(hidedestroy) {
+		super(hidedestroy);
 		this._okcal = function(){}; //点击ok的回调私有存储器
 		this._cancelcal = function(){}; //点击cancel的回调私有存储器
 		this._funarr = ['ok','cancel']; //可控制的回调方法名
 	}
-	$extendClass(ConfirmControl,$baseControl);
 	/**
 	 * 获取confirm弹层
 	 * @param {Boolean} reset 是否重新渲染模板。默认为false
 	 */
-	ConfirmControl.prototype.getlayerobj = function(reset){
-		var that = this;
+	getlayerobj(reset){
 		if(this._layerobj == null){
-			this._layerobj = new $confirm(this._defaultopt);
-			this._layerobj.okcal.add(function(e){
-				that._okcal();
+			this._layerobj = new Confirm(this._defaultopt);
+			this._layerobj.okcal.add((e) => {
+				this._okcal();
 			});
-			this._layerobj.cancelcal.add(function(e){
-				that._cancelcal();
+			this._layerobj.cancelcal.add((e) => {
+				this._cancelcal();
 			});
 			this._addcall();
 		}else{
@@ -60,14 +62,15 @@ define(['liblayers/confirm','liblayers/baseControl','libinherit/extendClass'],fu
             }
         }
 		return this._layerobj;
-	};
+	}
 	/**
 	 * 销毁alert弹层
 	 */
-	ConfirmControl.prototype.destroy = function(){
-		ConfirmControl.superclass.destroy.call(this);
+	destroy(){
+		super.destroy();
 		this._okcal = function(){};
 		this._cancelcal = function(){};
-	};
-	return ConfirmControl;
-});
+	}
+}
+
+module.exports = ConfirmControl;

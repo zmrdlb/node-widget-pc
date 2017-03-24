@@ -22,8 +22,7 @@
  *
  * */
 
- const $ = require('jquery'),
- 	   Layer = require('./layer.js'),
+ const Layer = require('./layer.js'),
  	   Mask = require('./mask.js'),
 	   PositionBomb = require('./positionBomb.js'),
 	   Tool = require('libutil-tool');

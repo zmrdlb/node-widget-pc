@@ -8,8 +8,7 @@
  *
  * */
 
- const $ = require('jquery'),
-       Tool = require('libutil-tool');
+ const Tool = require('libutil-tool');
 
  class BaseControl{
      /**

@@ -30,8 +30,7 @@
  *   layer.container; //浮层容器
  *   layer.destroy(); //销毁层
  * */
-const $ = require('jquery'),
- 	   BombLayer = require('./bombLayer.js');
+const BombLayer = require('./bombLayer.js');
 	   Tpl = require('./tpl.js');
 
 class Alert extends BombLayer {
