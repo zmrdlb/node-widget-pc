@@ -32,9 +32,9 @@
 /**
 * alert工厂控制器
 */
-class AlertControl extends Alert {
+class AlertControl extends BaseControl {
     constructor(hidedestroy) {
-        supert(hidedestroy);
+        super(hidedestroy);
         this._okcal = function(){}; //点击ok的回调私有存储器
 		this._funarr = ['ok']; //可控制的回调方法名
     }

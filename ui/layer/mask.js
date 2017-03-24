@@ -43,7 +43,7 @@
 		 this.mask.appendTo(container);
 		 this.mask.css('opacity',opt.opacity);
 		 this.custom  = opt.custom; //自定义方法
-		 this.pos = new $positionBomb({layer:this.mask},{mode:'full'});
+		 this.pos = new PositionBomb({layer:this.mask},{mode:'full'});
 		 //绑定事件
 		 this.clickcal = $.Callbacks(); //遮罩点击后的回调
 		 this.mask.on('click.lib',(e) => {

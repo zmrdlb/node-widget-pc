@@ -10,7 +10,7 @@
 
  const Tool = require('libutil-tool');
 
- class BaseControl{
+ class BaseControl {
      /**
       * 工厂模型控制器
       * @param {Boolean} hidedestroy 弹层关闭时，是否走系统默认的销毁操作。默认为true

@@ -3,6 +3,7 @@
  * @author Zhang Mingrui | 592044573@qq.com
  * var Tool = require('libutil-tool');
  */
+const Url = require('url');
 
 /**
  * data是否是无效字段。即是null|undefined|''
@@ -68,4 +69,16 @@ exports.isNumber = function(data){
  */
 exports.isValidJqueryDom = function(node){
 	return node != null && this.isFunction(node.size) && node.length > 0;
+}
+
+/**
+ * 解析url
+ * @param {String} url url地址，不填则取location.href
+ * @return {Object} urlObject https://nodejs.org/dist/latest-v6.x/docs/api/url.html#url_url_strings_and_url_objects
+ *  query: 如果没有query，则是{}
+ */
+exports.urlparse = function(url){
+	url = url || location.href;
+
+	return Url.parse(url,true);
 }

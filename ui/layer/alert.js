@@ -81,4 +81,4 @@ class Alert extends BombLayer {
 	}
 }
 
-module.exports Alert;
+module.exports = Alert;

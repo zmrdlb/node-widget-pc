@@ -27,7 +27,7 @@
 	   PositionBomb = require('./positionBomb.js'),
 	   Tool = require('libutil-tool');
 
-class BombLayer extends Layer{
+class BombLayer extends Layer {
 	/**
 	 * 弹层类——创建并添加到指定容器中
      * @param {JSON} config 弹层配置参数 ，不是必填项
@@ -43,13 +43,15 @@ class BombLayer extends Layer{
      *      }
 	 */
 	constructor(config) {
+        var _newcontainer = false;
 		if(!config.container || config.container.length == 0){
 			config.container = $('<div></div>').appendTo('body');
-			this._newcontainer = true; //说明是新创建的容器
+			_newcontainer = true; //说明是新创建的容器
 		}
 		config = config || {};
 		//初始化基类
 		super(config.container,config.layer);
+        this._newcontainer = _newcontainer;
 		//创建定位类对象
 		this.pos = new PositionBomb({
 			layer: this.layer
