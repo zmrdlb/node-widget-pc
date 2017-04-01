@@ -25,7 +25,10 @@
         "liblayer-confirmSingle": "./ui/layer/confirmSingle.js",
         "liblayer-layer": "./ui/layer/layer.js",
         "liblayer-mask": "./ui/layer/mask.js",
-        "liblayer-positionBomb": "./ui/layer/positionBomb.js"
+        "liblayer-positionBomb": "./ui/layer/positionBomb.js",
+
+        "libio-ioconfig": "./io/ioconfig.js",
+        "libio-interio": "./io/interio.js"
   },
   "scripts": {
     "jquery": "browserify -r jquery --standalone $ > lib/jquery.js"
