@@ -9,25 +9,26 @@
  *  getTrans {Function} 获取接口配置
  *  globalSetup {Function} 设置全局ajax配置
  * @example
- *   const IoConfig = require('libio-ioconfig');
+ * 		const IoConfig = require('libio-ioconfig');
  *
- 	 //统一处理未登录
-	 IoConfig.login.filter = function(result){
-	 	return result.code == 'A0002';
-	 };
-	 IoConfig.login.url = 'http://baidu.com/';
+	 	 //统一处理未登录
+		 IoConfig.login.filter = function(result){
+		 	return result.code == 'A0002';
+		 };
+		 IoConfig.login.url = 'http://baidu.com/';
 
-	 //所有接口的io业务错误统一处理
-	 IoConfig.fail.filter = function(result) {
-	 	return result.code != 'A0001';
-	 };
-	 IoConfig.iocall.fail = function(result){
-	 	alert(result.errmsg || '网络错误');
-	 };
+		 //所有接口的io业务错误统一处理
+		 IoConfig.fail.filter = function(result) {
+		 	return result.code != 'A0001';
+		 };
+		 IoConfig.iocall.fail = function(result){
+		 	alert(result.errmsg || '网络错误');
+		 };
 
-	 IoConfig.ioargs.crossDomain = true;
+		 IoConfig.ioargs.crossDomain = true;
  * */
 
+//var iocache = {}; //接口的配置项缓存。格式为{intername；ioargs里面的参数配置项json格式}
 var that = {};
 /**
  * 对于接口返回未登陆错误进行统一处理 配置。
@@ -45,6 +46,16 @@ that.login = {
 that.fail = {
     funname: 'fail', //当发生业务错误的时候，调用的格式同于ioargs里的函数的函数名。默认是error
     filter: function(data){return false;} //如果此函数返回true则说明当前接口返回业务错误信息。data是接口返回的数据
+    /**
+     * 如果接受业务错误信息统一处理，则可以按照以下方式填写：
+     * reqiurejs(['libio/ioconfig'],function($ioconfig){
+     *     $ioconfig.error = {
+     *         funname: 'fail',
+     *         filter: function(data){if(data && data.errcode != 0){return true;}}
+     *     };
+     *     $ioconfig.ioargs.fail = function(data){ alert(data.errmsg || '网络错误'); }
+     * });
+     */
 };
 that.ioargs = { //io请求默认的参数格式
 	//同ajax参数官方说明项
@@ -59,9 +70,16 @@ that.ioargs = { //io请求默认的参数格式
 	    dealfail: true, //是否统一处理业务错误
 	    dealdata: true, //当业务处理成功时，是否统一处理返回的数据。注意：只有当dealerror为true时，dealdata为true才有效。否则不会调用dealdata方法
 	    queue: false, //接口请求是否进行队列控制，即当前请求完成后才可以进行下一个请求
+		storage: null, //libio/storage对象，控制io请求数据缓存
+		clearall: false, //请求接口时，是否清除所有缓存
 	    getInter: function(interobj){} //获取接口请求实例对象。如interobj为$.ajax()返回的对象
 	}
 };
+/**
+ * 如果data是从本地缓存中读取的数据，那么success和fail方法中的参数：
+ * 		textStatus和jqXHR分别是 'success', null
+ * @type {Object}
+ */
 that.iocall = { //io请求回调
 	complete: function(){}, //参数为 data|jqXHR, textStatus, jqXHR|errorThrown
 	success: function(data, textStatus, jqXHR){},
