@@ -28,6 +28,7 @@
 	 constructor(container,config){
 		 container = container || $('body');
 		 var opt = $.extend({
+             classname: '', //mask的class
 			 bgcolor: '#000', //背景色
 			 zIndex: 1, //遮罩z-index
 			 opacity: 0.6, //遮罩透明度
@@ -39,7 +40,7 @@
 		 },config || {});
 		 var cssstr = 'position:absolute;background:'+opt.bgcolor+';'+(opt.show?'':'display:none;')+'z-index:'+opt.zIndex+';';
 		 this.container = container; //遮罩容器
-		 this.mask = $('<div style="'+cssstr+'"></div>');
+		 this.mask = $('<div'+(opt.classname == ''?'':' class="'+opt.classname+'"')+' style="'+cssstr+'"></div>');
 		 this.mask.appendTo(container);
 		 this.mask.css('opacity',opt.opacity);
 		 this.custom  = opt.custom; //自定义方法

@@ -124,14 +124,15 @@ class BombLayer extends Layer {
 	 */
 	destroy(){
 		this.layer.off('click.lib', '.js-close');
-		if(this._newcontainer){
-			this.container.remove();
-		}
-		super.destroy();
 		this.pos.destroy();
 		if(this.mask){
             this.mask.destroy();
         }
+        var container = this.container;
+        super.destroy();
+        if(this._newcontainer){
+			container.remove();
+		}
 		this._newcontainer = null;
 	}
 }
